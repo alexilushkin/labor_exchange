@@ -13,8 +13,10 @@ async def get_all_jobs(db: AsyncSession, filter_by_salary: FilterBySalary, filte
         query = query.where(Job.salary_from == salary)
     elif filter_by_salary == FilterBySalary.MAX:
         query = query.where(Job.salary_to == salary)
-    if filter_by_activeness == FilterByActiveness.YES:
+    if filter_by_activeness == FilterByActiveness.ACT:
         query = query.where(Job.is_active == True)
+    elif filter_by_activeness == FilterByActiveness.INA:
+        query = query.where(Job.is_active == False)
     if order_by is not order_by.NO:
         if order_by == OrderBy.ASC:
             query = query.order_by(asc(Job.created_at))
