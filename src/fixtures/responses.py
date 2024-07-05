@@ -10,4 +10,4 @@ class ResponseFactory(AsyncSQLAlchemyModelFactory):
 
     id = factory.Sequence(lambda n: n)
 
-    message = factory.Faker("pystr", locale="ru-RU")
+    message = factory.Faker("paragraph", locale="ru-RU")

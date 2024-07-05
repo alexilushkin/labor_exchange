@@ -53,7 +53,7 @@ async def create_job(db: AsyncSession, job_schema: JobInSchema, user_id: int) ->
         description=job_schema.description,
         salary_from=job_schema.salary_from,
         salary_to=job_schema.salary_to,
-        is_active=job_schema.is_active,
+        is_active=job_schema.is_active
     )
     db.add(job)
     await db.commit()
