@@ -53,14 +53,8 @@ async def update_response(
     if old_response.user_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Это не ваш отклик")
 
-    old_response.job_id = response.job_id if response.job_id is not None else old_response.job_id
     old_response.message = response.message if response.message is not None else old_response.message
 
-    job = await jobs_queries.get_job_by_id(db=db, job_id=old_response.job_id)
-    if job is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Работа не найдена")
-    if job.is_active is False:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Вакансия не является активной")
     new_response = await responses_queries.update_response(db=db, response=old_response)
 
     return ResponseSchema.from_orm(new_response)

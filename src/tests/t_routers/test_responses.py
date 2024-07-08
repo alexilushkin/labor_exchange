@@ -191,76 +191,6 @@ async def test_update_response(sa_session, client_app, current_user: User):
     assert all_responses.status_code == status.HTTP_200_OK
     assert all_responses.json()['message'] == "Класс, всегда об этом мечтал"
 
-"""
-@pytest.mark.asyncio
-async def test_update_response_missed_job(sa_session, client_app, current_user: User):
-    current_user.is_company = False
-    sa_session.add(current_user)
-    sa_session.flush()
-
-    company = UserFactory.build()
-    company.is_company = True
-    sa_session.add(company)
-    sa_session.flush()
-
-    job = JobFactory.build()
-    job.is_active = True
-    job.user_id = company.id
-    sa_session.add(job)
-    sa_session.flush()
-
-    response_first = ResponseFactory.build()
-    response_first.user_id = current_user.id
-    response_first.job_id = job.id
-    sa_session.add(response_first)
-    sa_session.flush()
-
-    updated_response = ResponseUpdateSchema(
-        job_id=job.id-1,
-        message="Класс, всегда об этом мечтал"
-    )
-    id = response_first.id
-
-    all_responses = await client_app.put(f'/responses?id={id}', json=updated_response.dict())
-
-    assert all_responses.status_code == status.HTTP_404_NOT_FOUND
-    assert all_responses.json()['detail'] == "Работа не найдена"
-"""
-
-@pytest.mark.asyncio
-async def test_update_inactive_response(sa_session, client_app, current_user: User):
-    current_user.is_company = False
-    sa_session.add(current_user)
-    sa_session.flush()
-
-    company = UserFactory.build()
-    company.is_company = True
-    sa_session.add(company)
-    sa_session.flush()
-
-    job = JobFactory.build()
-    job.is_active = False
-    job.user_id = company.id
-    sa_session.add(job)
-    sa_session.flush()
-
-    response_first = ResponseFactory.build()
-    response_first.user_id = current_user.id
-    response_first.job_id = job.id
-    sa_session.add(response_first)
-    sa_session.flush()
-
-    updated_response = ResponseUpdateSchema(
-        job_id=job.id,
-        message="Класс, всегда об этом мечтал"
-    )
-    id = response_first.id
-
-    all_responses = await client_app.put(f'/responses?id={id}', json=updated_response.dict())
-
-    assert all_responses.status_code == status.HTTP_403_FORBIDDEN
-    assert all_responses.json()['detail'] == "Вакансия не является активной"
-
 
 @pytest.mark.asyncio
 async def test_update_missed_response(sa_session, client_app, current_user: User):
@@ -286,7 +216,6 @@ async def test_update_missed_response(sa_session, client_app, current_user: User
     sa_session.flush()
 
     updated_response = ResponseUpdateSchema(
-        job_id=job.id,
         message="Класс, всегда об этом мечтал"
     )
     id = response_first.id
@@ -321,7 +250,6 @@ async def test_update_foreign_response(sa_session, client_app, current_user: Use
     sa_session.flush()
 
     updated_response = ResponseUpdateSchema(
-        job_id=job.id,
         message="Класс, всегда об этом мечтал"
     )
     id = response_first.id

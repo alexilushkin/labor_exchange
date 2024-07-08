@@ -12,6 +12,5 @@ class ResponseSchema(BaseModel):
 
 
 class ResponseUpdateSchema(BaseModel):
-    job_id: Optional[int] = None
     message: Optional[str] = None
 

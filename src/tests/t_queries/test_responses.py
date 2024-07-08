@@ -1,16 +1,8 @@
 import pytest
-from queries import user as user_query
-from queries import jobs as jobs_query
 from queries import responses as responses_query
 from fixtures.users import UserFactory
 from fixtures.jobs import JobFactory
 from fixtures.responses import ResponseFactory
-from schemas import UserInSchema
-from schemas import JobInSchema
-from schemas import ResponseSchema
-from models import Response
-from pydantic import ValidationError
-from queries.utils import OrderBy, FilterBySalary, FilterByActiveness
 
 
 @pytest.mark.asyncio
@@ -165,7 +157,7 @@ async def test_response_job(sa_session):
 
 
 @pytest.mark.asyncio
-async def test_update_job(sa_session):
+async def test_update_response(sa_session):
     user = UserFactory.build()
     sa_session.add(user)
     sa_session.flush()
