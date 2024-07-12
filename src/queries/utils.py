@@ -14,7 +14,8 @@ class FilterBySalary(str, enum.Enum):
 
 
 class FilterByActiveness(str, enum.Enum):
-    YES = 'Есть'
+    ACT = 'Активные вакансии'
+    INA = 'Неактивные вакансии'
     NO = 'Отсутствует'
 
 

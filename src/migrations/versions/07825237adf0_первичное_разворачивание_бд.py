@@ -1,8 +1,8 @@
-"""Добавлены таблицы Users, Jobs, Responses
+"""первичное разворачивание БД
 
-Revision ID: e6b667630d8a
+Revision ID: 07825237adf0
 Revises: 
-Create Date: 2022-08-29 13:58:36.233861
+Create Date: 2024-07-03 16:27:07.447392
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e6b667630d8a'
+revision = '07825237adf0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,6 +32,12 @@ def upgrade() -> None:
     op.create_table('jobs',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False, comment='Идентификатор вакансии'),
     sa.Column('user_id', sa.Integer(), nullable=True, comment='Идентификатор пользователя'),
+    sa.Column('title', sa.String(), nullable=True, comment='Название вакансии'),
+    sa.Column('description', sa.String(), nullable=True, comment='Описание вакансии'),
+    sa.Column('salary_from', sa.DECIMAL(), nullable=True, comment='Зарплата от'),
+    sa.Column('salary_to', sa.DECIMAL(), nullable=True, comment='Зарплата до'),
+    sa.Column('is_active', sa.Boolean(), nullable=True, comment='Активна ли вакансия'),
+    sa.Column('created_at', sa.DateTime(), nullable=True, comment='Дата создания вакансии'),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -39,6 +45,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False, comment='Идентификатор отклика'),
     sa.Column('user_id', sa.Integer(), nullable=True, comment='Идентификатор пользователя'),
     sa.Column('job_id', sa.Integer(), nullable=True, comment='Идентификатор вакансии'),
+    sa.Column('message', sa.String(), nullable=True, comment='Сопроводительное письмо'),
     sa.ForeignKeyConstraint(['job_id'], ['jobs.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

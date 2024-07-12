@@ -29,7 +29,11 @@ async def read_my_jobs(
     id: int,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)):
-    id = current_user.id
+
+    old_user = await user_queries.get_by_id(db=db, id=id)
+
+    if old_user is None or old_user.email != current_user.email:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
     if current_user.is_company is False:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Вы соискатель. Вакансии создаются компаниями")
 
@@ -43,7 +47,7 @@ async def create_job(
     current_user: User = Depends(get_current_user)):
 
     if current_user.is_company is False:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Вы соискатель. Вакансии создаются компаниям")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Вы соискатель. Вакансии создаются компаниями")
 
     new_job = await jobs_queries.create_job(db=db, job_schema=job, user_id=current_user.id)
     return JobSchema.from_orm(new_job)

@@ -9,7 +9,7 @@ class UserFactory(AsyncSQLAlchemyModelFactory):
         model = User
 
     id = factory.Sequence(lambda n: n)
-    name = factory.Faker("pystr")
+    name = factory.Faker("name", locale="ru-Ru")
     email = factory.Faker("email")
     hashed_password = factory.Faker("password")
     is_company = factory.Faker("pybool")

@@ -25,7 +25,7 @@ async def delete_some_responses(db: AsyncSession, responses: Sequence[Response])
 
 async def get_response_by_user_id(db: AsyncSession, user_id: int, choice: int) -> Sequence[Response]:
     if choice == 0:
-        query = select(Response).where(Response.job.user_id == user_id)
+        query = select(Response).where(Response.job.has(Job.user_id == user_id))
     else:
         query = select(Response).where(Response.user_id == user_id)
     res = await db.execute(query)
